@@ -1,0 +1,67 @@
+header{
+    text-align: center;
+    font-size: 1.2em;
+}
+
+h1 {
+    color: blue;
+}
+main{
+    display: flex;
+    flex-direction: column;
+}
+.demo {
+    display: flex;
+    flex-direction: row;
+}
+
+fieldset {
+    border-color: blue;
+    color: blue;
+}
+
+.demo section{
+    font-size: 1em;
+    width: 48%;
+    text-align: center;
+    padding: 10px;
+}
+
+div {
+    padding: 10px;
+}
+
+button {
+    background-color: blue;
+    color: white;
+    border-radius: 5%;
+    padding: 5px;
+}
+span{
+    color: blue;
+}
+em{
+    color: red;
+}
+h2{
+    text-align: center;
+}
+.process{
+    text-align: center;
+}
+.df img{
+    width: 70%;
+}
+.vues div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.vues img{
+    width: 30%;
+    border: 2px solid black;
+    padding: 10px;
+}
+ul{
+    list-style-type: none;
+}
