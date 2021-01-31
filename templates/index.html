@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+    <title>exo_flask_titanic</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href={{url_for("static", filename="css/style.css")}}>
+</head>
+
+<body>
+    <header>
+        <h1>Le Titanic</h1>
+        <p>Estimation de vos chances de survie, si vous etiez à bord.</p>
+    </header>
+    <main>
+        <article class="demo">
+        <section>
+            <form action="{{ url_for('predict')}}" method="post">
+                <fieldset>
+                    <div>
+                        <label for="sibsp">Nombre d’époux, de frères ou de soeurs présents à bord?</label>
+                        <input type="text" name="sibsp" required="required" />
+                    </div>
+                    <div>
+                        <label for="parch">Nombre de parents ou d’enfants présents à bord?</label>
+                        <input type="text" name="parch" required="required" />
+                    </div>
+                    <div>
+                        <label for="fare">Quel est le prix du billet?</label>
+                        <input type="text" name="fare" placeholder="arrondi à la £ près" required="required" />
+                    </div>
+                    <div>
+                        <p>Dans quelle classe voyagez-vous? :</p>
+                        <input type="radio" id="pclass1" name="pclass" value="1" required="required">
+                        <label for="pclass1">1ere classe</label>
+                        <input type="radio" id="pclass2" name="pclass" value="2">
+                        <label for="pclass2">2eme classe</label>
+                        <input type="radio" id="pclass3" name="pclass" value="3">
+                        <label for="pclass3">3eme classe</label>
+                    </div>
+                    <div>
+                        <p>Quel est votre sexe :</p>
+                        <input type="radio" id="male" name="sex" value="1" required="required">
+                        <label for="male">Homme</label>
+                        <input type="radio" id="female" name="sex" value="0">
+                        <label for="female">Femme</label>
+                    </div>
+                    <div>
+                        <label for="age">Quel est votre age?</label>
+                        <input type="text" name="age" required="required" />
+                    </div>
+                    <button type="submit">Predictions</button>
+                </fieldset>
+            </form>
+            
+        </section>
+        <section>
+            <p>Cette estimation est basée sur le fichier Titanic.csv, contenant les informations sur 891 passagers
+                présents à bord du paquebot.</p>
+            <p>Après avoir analysé les données à l'aide des librairies matplotlib et seaborn, j'ai préparé les données
+                en:</p>
+            <ul>
+                <li>remplaçant les valeurs manquantes de la colonne age, par l'age moyen présent à bord</li>
+                <li>convertissant les données catégorielles en données numériques (colonnes sexe et classe)</li>
+                <li>comparant la précision des différents modèles de classification, tels que :</li>
+                    <ul>
+                        <li>logisticRegression</li>
+                        <li>KNeighborsClassifier</li>
+                        <li>randomForestClassifier</li>
+                    </ul> 
+            </ul>
+            <p>Ensuite, j'ai entrainé mon modèle <span>RandomForestClassifier</span> sur le jeu de données
+                d'entrainement, préparé préalablement.</p>
+            <p>Le test du modèle, démontre une précision de 81%</p>
+            <br>
+            <em>{{ zone_prediction }}</em>
+            <br>
+            <em>{{ zone_prediction1 }}</em>
+        </section>
+    </article>
+        <article class="process">
+            <h2>Le processus en image</h2>
+            <section class="df">
+                <p>Les 10 premières lignes du jeu de données initial</p>
+                <img class="bann" src={{url_for('static', filename='img/titanicHead.png')}}>
+            </section>
+            <section>
+                <p>Sélection de ma colonne cible (survived) ainsi que des 3 colonnes ci-dessous</p>
+                <img src={{url_for('static', filename='img/titanic1erTest.png')}}>
+            </section>
+            <section>
+                <p>Création de la fonction permettant de calculer le score (précision de mes futurs modèles) en utilisant la validation croisée.</p>
+                <img src={{url_for('static', filename='img/titanicCompute_score.png')}}>
+            </section>
+            <section>
+                <p>1er test du modèle de logisticRegression, le score n'étant pas très élevé voyons comment améliorer la prédiction..</p>
+                <img src={{url_for('static', filename='img/titanicLr1er.png')}}>
+            </section>
+            <section class="vues">
+                <h3>Visualisation</h3>
+                <p>Pour comprendre l'importance de certaines colonnes de mon jeu de données</p>
+                <div>
+                <img src={{url_for('static', filename='img/titanicVue1.png')}}>
+                <img src={{url_for('static', filename='img/titanicVue2.png')}}>
+                <img src={{url_for('static', filename='img/titanicVue3.png')}}>
+            </div>
+            <p>On peut constater que la classe dans laquelle voyageaient les passagers, ainsi que leur sexe, ont un réel impact sur le résultat.</p>
+            <p>Ces 2 colonnes étant des données catégorielles, il faut les transformer en données numériques, afin qu'elles soient prises en compte par mon modèle.</p>
+            <p>La colonne age ayant des valeurs manquantes, j'ai pour cette démonstration, modifié celles-ci par l'age moyen présent à bord.</p>
+            </section>
+            <section class="df">
+                <p>Les 5 premières lignes du jeu de données aprés modifications</p>
+                <p>Je n'ai conservé que les colonnes ayant un réel impact sur le resultat</p>
+                <img src={{url_for('static', filename='img/titanicClean.png')}}>
+            </section>
+            <section class="score">
+                <p>Comparaison des scores et choix du plus performant</p>
+                <ul>
+                    <li>logisticRegression</li>
+                    <li><img src={{url_for('static', filename='img/lrScoreTitanic.png')}}></li>
+                    <li>KNeighborsClassifier</li>
+                    <li><img src={{url_for('static', filename='img/knnScoreTitanic.png')}}></li>
+                    <li>randomForestClassifier</li>
+                    <li><img src={{url_for('static', filename='img/rfScoreTitanic.png')}}></li>
+                </ul>
+            </section>
+        </article>
+    </main>
+</body>
+
+</html>
